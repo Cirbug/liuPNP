@@ -1,2 +1,24 @@
-idf_component_register(SRCS "blink_example_main.c"
-                       INCLUDE_DIRS ".")
+idf_component_register(
+    SRCS
+        main.c
+        camera.c
+        base64.c
+        doubao.c
+        vision.c
+        motion.c
+        calib.c
+        placements.c
+        state_machine.c
+    INCLUDE_DIRS "."
+    REQUIRES
+        freertos
+        esp_system
+        esp_wifi
+        esp_camera
+        esp_http_client
+        nvs_flash
+        nvs
+        driver
+        cJSON
+        spi_flash
+)
