@@ -9,13 +9,17 @@ idf_component_register(
         calib.c
         placements.c
         state_machine.c
+        http_client.c
+        web_server.c
     INCLUDE_DIRS "."
     REQUIRES
         freertos
         esp_system
+        esp_timer
         esp_wifi
         esp_camera
         esp_http_client
+        esp_http_server
         nvs_flash
         driver
         cJSON

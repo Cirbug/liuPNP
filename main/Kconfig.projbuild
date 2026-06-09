@@ -17,11 +17,37 @@ menu "AI-PNP Configuration"
         default "YOUR_DOUBAO_API_KEY"
         help
             API key for Doubao Vision API.
+            Obtain from: https://console.volcengine.com/ark
 
     config DOUBAO_API_URL
         string "Doubao API URL"
-        default "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
+        default "https://ark.cn-beijing.volces.com/api/v3"
         help
-            Doubao Vision API endpoint URL.
+            Doubao Vision API base URL (without /chat/completions).
+
+    config DOUBAO_MODEL
+        string "Doubao Model"
+        default "doubao-seed-1-6-vision-250815"
+        help
+            Doubao vision model name.
+
+    config DOUBAO_TIMEOUT_MS
+        int "Doubao API Timeout (ms)"
+        default 15000
+        help
+            HTTP timeout for vision API calls.
+
+    config DOUBAO_MAX_RETRIES
+        int "Doubao API Max Retries"
+        default 2
+        range 0 5
+        help
+            Max retry times on API failure (0 = no retry).
+
+    config HTTP_IMG_URL
+        string "PC mjpg-streamer Snapshot URL"
+        default "http://192.168.1.100:8080/?action=snapshot"
+        help
+            HTTP URL to fetch JPEG snapshots from mjpg-streamer.
 
 endmenu
