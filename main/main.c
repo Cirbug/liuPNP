@@ -24,8 +24,10 @@
 #include "freertos/task.h"
 #include "esp_system.h"
 #include "esp_log.h"
-#include "esp_wifi.h"
 #include "nvs_flash.h"
+#if CONFIG_SOC_WIFI_SUPPORTED
+#include "esp_wifi.h"
+#endif
 
 #include "camera.h"
 #include "doubao.h"
@@ -39,8 +41,10 @@ static const char *TAG = "main";
 static calibration_t g_calib;
 
 /* ================================================================
- * WiFi 初始化
+ * WiFi 初始化 (ESP32-P4 无内置 WiFi, 需 C6 协处理器)
+ * TODO: 通过 ESP-AT / ESP-Hosted 使用 C6 的 WiFi
  * ================================================================ */
+#if CONFIG_SOC_WIFI_SUPPORTED
 static void wifi_init_sta(void) {
     esp_netif_init();
     esp_event_loop_create_default();
@@ -50,7 +54,6 @@ static void wifi_init_sta(void) {
     esp_wifi_init(&cfg);
 
     wifi_config_t wifi_cfg = {0};
-    /* 从 sdkconfig 读 WiFi 配置, 或在此处硬编码 */
     strcpy((char *)wifi_cfg.sta.ssid,     CONFIG_WIFI_SSID);
     strcpy((char *)wifi_cfg.sta.password, CONFIG_WIFI_PASSWORD);
 
@@ -60,8 +63,12 @@ static void wifi_init_sta(void) {
 
     ESP_LOGI(TAG, "WiFi connecting to %s...", CONFIG_WIFI_SSID);
     esp_wifi_connect();
-    /* 简化版: 不等连接完成, main loop 会在任务中处理 */
 }
+#else
+static void wifi_init_sta(void) {
+    ESP_LOGW(TAG, "WiFi not supported on ESP32-P4; use C6 co-processor");
+}
+#endif
 
 /* ================================================================
  * test 命令: 拍照 → 豆包 → 看描述

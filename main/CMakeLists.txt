@@ -17,7 +17,6 @@ idf_component_register(
         esp_camera
         esp_http_client
         nvs_flash
-        nvs
         driver
         cJSON
         spi_flash
